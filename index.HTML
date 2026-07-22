@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Creative Request Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0A3A68;
+    --blue:#1698D3;
+    --green:#22C55E;
+    --paper:#F7F3EA;
+    --paper-line: rgba(10,58,104,0.14);
+    --bg:#EEF1F5;
+    --ink:#12181F;
+    --ink-soft:#5C6773;
+    --ink-faint:#8993A1;
+    --red:#DC2626;
+    --card-line: rgba(10,58,104,0.10);
+    --radius-lg: 22px;
+    --radius-md: 14px;
+    --shadow: 0 18px 45px rgba(10,58,104,0.08);
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    min-height:100vh;
+    padding:40px 20px 64px;
+  }
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+  }
+  /* ---------- Hero ---------- */
+  .hero{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+    margin-bottom:34px;
+    padding-bottom:22px;
+    border-bottom:1px solid var(--card-line);
+  }
+  .hero-eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--blue);
+    font-weight:600;
+    margin:0 0 10px;
+  }
+  .hero h1{
+    margin:0;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(30px,4vw,46px);
+    letter-spacing:-0.03em;
+    color:var(--navy);
+    line-height:1.05;
+  }
+  .hero p{
+    margin:10px 0 0;
+    color:var(--ink-soft);
+    font-size:14.5px;
+    max-width:520px;
+    line-height:1.6;
+  }
+  .hero-logo{
+    max-width:150px;
+    max-height:52px;
+    object-fit:contain;
+    opacity:0.92;
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:920px){
+    .layout{grid-template-columns:1fr;}
+    .ticket-col{order:-1;}
+  }
+
+  /* ---------- Form panel ---------- */
+  .form-panel{
+    background:#ffffff;
+    border:1px solid var(--card-line);
+    border-radius:var(--radius-lg);
+    padding:8px 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .section{
+    padding:24px 0;
+    border-bottom:1px solid rgba(148,163,184,0.18);
+  }
+  .section:last-of-type{border-bottom:none;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .section-num{
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:600;
+    color:var(--blue);
+    background:rgba(22,152,211,0.10);
+    border:1px solid rgba(22,152,211,0.22);
+    border-radius:7px;
+    padding:2px 7px;
+    flex-shrink:0;
+  }
+  .section-title{
+    margin:0;
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:15.5px;
+    color:var(--navy);
+  }
+  .section-desc{
+    margin:4px 0 0 0;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    line-height:1.5;
+  }
+
+  .radio-stack{display:grid; gap:9px;}
+  .choice-row{
+    display:flex; align-items:center; gap:12px;
+    padding:13px 15px; border-radius:12px;
+    background:#F9FAFB; border:1px solid rgba(148,163,184,0.20);
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .choice-row:hover{border-color:rgba(10,58,104,0.28);}
+  .choice-row input{width:16px;height:16px;accent-color:var(--navy); cursor:pointer; flex-shrink:0;}
+  .choice-row span{font-size:13.5px;font-weight:500;color:var(--ink);}
+
+  .dim-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .dim-card{
+    display:flex; align-items:flex-start; gap:11px;
+    padding:14px 15px; border-radius:14px;
+    border:1px solid rgba(148,163,184,0.24);
+    background:#fff; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, box-shadow .15s ease;
+  }
+  .dim-card.selected{
+    border-color:var(--navy);
+    background:rgba(10,58,104,0.045);
+    box-shadow:0 8px 20px rgba(10,58,104,0.08);
+  }
+  .dim-card input{margin-top:2px; width:17px;height:17px;accent-color:var(--navy);cursor:pointer;flex-shrink:0;}
+  .dim-label{margin:0;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.4;}
+
+  .custom-box{
+    padding:15px; border-radius:14px;
+    background:rgba(10,58,104,0.04);
+    border:1px solid rgba(10,58,104,0.12);
+    margin-bottom:10px;
+  }
+  .field-label{
+    display:block; margin-bottom:7px;
+    font-size:12.5px; font-weight:600; color:#374151;
+  }
+  .text-input, .text-area, select{
+    width:100%; padding:12px 14px; border-radius:12px;
+    border:1px solid rgba(148,163,184,0.28);
+    background:#fff; color:var(--ink); font-size:13.5px;
+    outline:none; font-family:var(--font-body);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .text-input:focus, .text-area:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(22,152,211,0.14);
+  }
+  .text-input.err, .text-area.err{border-color:var(--red);}
+  .text-area{resize:vertical; min-height:120px; line-height:1.6;}
+
+  .two-col{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px;}
+
+  .upload-box{
+    border:1.5px dashed rgba(10,58,104,0.24);
+    border-radius:16px; background:#FAFAFA; overflow:hidden;
+    transition:border-color .15s ease;
+  }
+  .upload-box.err{border-color:var(--red);}
+  .upload-label{
+    display:grid; place-items:center; text-align:center; gap:8px;
+    cursor:pointer; padding:26px 18px;
+  }
+  .upload-icon-wrap{
+    width:50px;height:50px;border-radius:14px;
+    display:grid;place-items:center;
+    background:rgba(10,58,104,0.08); border:1px solid rgba(10,58,104,0.12);
+  }
+  .upload-title{margin:0;font-size:14px;font-weight:600;color:var(--ink);}
+  .upload-text{margin:0;font-size:12px;color:var(--ink-faint);}
+  .file-name{margin:10px 0 0;font-size:12.5px;font-weight:600;color:var(--green);}
+
+  .error-text{
+    margin-top:9px; display:flex; align-items:center; gap:7px;
+    color:var(--red); font-size:12.5px; font-weight:500;
+  }
+
+  .actions{display:flex; gap:12px; padding-top:24px;}
+  .btn{
+    flex:1; padding:14px 20px; border-radius:13px; border:none;
+    font-size:13.5px; font-weight:700; letter-spacing:0.01em;
+    cursor:pointer; font-family:var(--font-body);
+    transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{
+    background:linear-gradient(135deg, var(--navy), var(--blue));
+    color:#fff; box-shadow:0 14px 26px rgba(10,58,104,0.22);
+  }
+  .btn-primary:hover{filter:brightness(1.06);}
+  .btn-secondary{
+    background:#F8FAFC; color:#374151; border:1px solid rgba(148,163,184,0.28);
+  }
+  .btn-secondary:hover{background:#F1F5F9;}
+
+  
+  /* ---------- Confirmation ---------- */
+  .confirm-card{
+    background:#fff; border:1px solid var(--card-line); border-radius:26px;
+    padding:30px; box-shadow:var(--shadow);
+  }
+  .confirm-top{
+    display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;
+    padding-bottom:22px; border-bottom:1px solid rgba(148,163,184,0.18);
+  }
+  .confirm-icon{
+    width:64px; height:64px; border-radius:20px; flex-shrink:0;
+    display:grid; place-items:center;
+    background:rgba(34,197,94,0.10); border:1px solid rgba(34,197,94,0.20);
+  }
+  .confirm-eyebrow{
+    margin:2px 0 6px; font-family:var(--font-mono); text-transform:uppercase;
+    letter-spacing:0.14em; font-size:11.5px; color:var(--green); font-weight:700;
+  }
+  .confirm-title{
+    margin:0; font-family:var(--font-display); font-weight:700;
+    font-size:clamp(22px,3vw,30px); color:var(--navy); letter-spacing:-0.02em;
+  }
+  .confirm-subtitle{margin:10px 0 0; color:var(--ink-soft); font-size:14px; line-height:1.6;}
+
+  .highlight-row{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:12px; margin-top:20px;
+  }
+  .highlight-card{
+    padding:16px; border-radius:16px;
+    background:linear-gradient(180deg, rgba(10,58,104,0.055), rgba(10,58,104,0.02));
+    border:1px solid rgba(10,58,104,0.10);
+  }
+  .highlight-value{margin-top:8px; font-family:var(--font-mono); font-size:15px; font-weight:700; color:var(--navy);}
+
+  .meta-label{font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); font-weight:700;}
+  .summary-section{margin-top:24px;}
+  .summary-heading{margin:0 0 12px; font-family:var(--font-display); font-size:15px; color:var(--navy); font-weight:700;}
+  .summary-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px;}
+  .summary-tile{padding:14px; border-radius:14px; background:#F9FAFB; border:1px solid rgba(148,163,184,0.18); min-height:78px;}
+  .summary-tile-value{margin-top:8px; color:var(--ink); font-weight:600; font-size:13px; line-height:1.5;}
+  .story-card{margin-top:12px; padding:14px; border-radius:14px; background:#fff; border:1px solid rgba(148,163,184,0.18);}
+  .story-text{margin:8px 0 0; color:#374151; font-size:13px; line-height:1.65; white-space:pre-wrap;}
+  .confirm-actions{display:flex; justify-content:flex-end; margin-top:22px;}
+
+  .hidden{display:none !important;}
+
+  @media (max-width:640px){
+    .ticket-row .v, .tag-wrap{max-width:56%;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="shell">
+
+    <div class="hero">
+      <div>
+        <h1>Creative Request Form</h1>
+        <p>Your 5 minutes here can save 5 revisions later.</p>
+      </div>
+      <img class="hero-logo" src="https://partner.rnfi.in/agent/assets/img/logo.png" alt="Company logo" onerror="this.style.display='none'">
+    </div>
+
+    <!-- ===== FORM VIEW ===== -->
+    <div id="formView" class="layout">
+      <form id="requestForm" class="form-panel" novalidate>
+
+        <!-- 1. Organisation -->
+        <section class="section">
+          <div class="section-head">
+            <span class="section-num">01</span>
+            <div>
+              <h3 class="section-title">Organisation</h3>
+              <p class="section-desc">Choose the business unit submitting the request.</p>
+            </div>
+          </div>
+          <div class="radio-stack" id="organisationGroup"></div>
+          <div id="err-organisation"></div>
+        </section>
+
+        <!-- 2. Dimensions -->
+        <section class="section">
+          <div class="section-head">
+            <span class="section-num">02</span>
+            <div>
+              <h3 class="section-title">Banner Dimensions</h3>
+              <p class="section-desc">Select one or more sizes required for the campaign.</p>
+            </div>
+          </div>
+          <div class="dim-grid" id="dimensionGrid"></div>
+          <div id="customBoxWrap" class="hidden">
+            <div class="custom-box">
+              <label class="field-label">Custom Dimensions</label>
+              <input type="text" id="dimensionCustom" class="text-input" placeholder="e.g., 1920x1080 or 1200x800" />
+              <div id="err-dimensionCustom"></div>
+            </div>
+          </div>
+          <div id="err-dimensionPresets"></div>
+        </section>
+
+        <!-- 3. Design team -->
+        <section class="section">
+          <div class="section-head">
+            <span class="section-num">03</span>
+            <div>
+              <h3 class="section-title">Design Team Required</h3>
+              <p class="section-desc">Assign the most relevant creative team.</p>
+            </div>
+          </div>
+          <div class="radio-stack" id="designTeamGroup"></div>
+          <div id="err-designTeam"></div>
+        </section>
+
+        <!-- 4. Contact details -->
+        <section class="section">
+          <div class="section-head">
+            <span class="section-num">04</span>
+            <div>
+              <h3 class="section-title">Enter your Contact Details</h3>
+              <p class="section-desc">The person responsible for approvals and updates.</p>
+            </div>
+          </div>
+          <div class="two-col">
+            <div>
+              <label class="field-label">Name</label>
+              <input type="text" id="spocName" class="text-input" placeholder="Your full name" />
+              <div id="err-spocName"></div>
+            </div>
+            <div>
+              <label class="field-label">Email</label>
+              <input type="email" id="spocEmail" class="text-input" placeholder="your.email@rnfiservices.com" />
+              <div id="err-spocEmail"></div>
+            </div>
+            <div>
+              <label class="field-label">Mobile Number</label>
+              <input type="tel" id="spocMobile" class="text-input" placeholder="10-digit mobile number" maxlength="10" />
+              <div id="err-spocMobile"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Storyline -->
+        <section class="section">
+          <div class="section-head">
+            <span class="section-num">05</span>
+            <div>
+              <h3 class="section-title">Story Line / Brief</h3>
+              <p class="section-desc">Provide detailed context and requirements.</p>
+            </div>
+          </div>
+          <textarea id="storyline" class="text-area" rows="6" placeholder="Describe the objective, messaging, tone, references, and anything else the team should know..."></textarea>
+          <div id="err-storyline"></div>
+        </section>
+
+        <!-- 6. Go-live date -->
+        <section class="section">
+          <div class="section-head">
+            <span class="section-num">06</span>
+            <div>
+              <h3 class="section-title">Planned Go-Live Date</h3>
+              <p class="section-desc">When the creative needs to be ready.</p>
+            </div>
+          </div>
+          <label class="field-label">Design needed by</label>
+          <input type="date" id="goLiveDate" class="text-input" style="max-width:260px;" />
+          <div id="err-goLiveDate"></div>
+        </section>
+
+        <!-- 7. Reference banner -->
+        <section class="section">
+          <div class="section-head">
+            <span class="section-num">07</span>
+            <div>
+              <h3 class="section-title">Reference Banner</h3>
+              <p class="section-desc">Upload any existing creative, mockup, or visual reference. Optional.</p>
+            </div>
+          </div>
+          <div class="upload-box" id="uploadBox">
+            <input type="file" id="bannerUpload" accept="image/jpeg,image/png,image/gif,application/pdf" style="display:none;" />
+            <label for="bannerUpload" class="upload-label">
+              <div class="upload-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A3A68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <p class="upload-title" id="uploadTitle">Click to upload reference</p>
+              <p class="upload-text">JPG, PNG, GIF or PDF up to 5MB</p>
+            </label>
+          </div>
+          <div id="fileNameDisplay"></div>
+          <div id="err-referenceBanner"></div>
+        </section>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Submit Request</button>
+          <button type="button" id="clearBtn" class="btn btn-secondary">Clear Form</button>
+        </div>
+      </form>
+
+      <!-- ===== LIVE DOCKET PREVIEW ===== -->
+      
+
+    <!-- ===== CONFIRMATION VIEW ===== -->
+    <div id="confirmationView" class="hidden">
+      <div class="confirm-card">
+        <div class="confirm-top">
+          <div class="confirm-icon">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div>
+            <p class="confirm-eyebrow">Request submitted</p>
+            <h2 class="confirm-title">Your brief is in the queue</h2>
+            <p class="confirm-subtitle">Confirmation sent to <strong id="confirmEmail"></strong>.</p>
+          </div>
+        </div>
+
+        <div class="highlight-row">
+          <div class="highlight-card">
+            <span class="meta-label">Submitted On</span>
+            <div class="highlight-value" id="confirmSubmittedAt"></div>
+          </div>
+          <div class="highlight-card">
+            <span class="meta-label">Request ID</span>
+            <div class="highlight-value" id="confirmRequestId"></div>
+          </div>
+        </div>
+
+        <div class="summary-section">
+          <h3 class="summary-heading">Submission details</h3>
+          <div class="summary-grid" id="confirmDetailsGrid"></div>
+        </div>
+
+        <div class="summary-section">
+          <h3 class="summary-heading">Request snapshot</h3>
+          <div class="summary-grid" id="confirmSnapshotGrid"></div>
+          <div class="story-card">
+            <span class="meta-label">Brief</span>
+            <p class="story-text" id="confirmStory"></p>
+          </div>
+        </div>
+
+        <div class="confirm-actions">
+          <button class="btn btn-primary" id="anotherBtn" style="flex:none; padding:14px 26px;">Submit Another Request</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  const ORGANISATIONS = [
+    { id:'relipay', label:'Relipay' },
+    { id:'vidcom', label:'Vidcom' },
+    { id:'payworld', label:'Payworld' },
+  ];
+  const DIMENSION_PRESETS = [
+    { id:'social', label:'Slider Banner (1140x450)' },
+    { id:'website', label:'Notification (1140x350)' },
+    { id:'email', label:'WhatsApp (800x800)' },
+    { id:'mobile', label:'Pop Up (800x800)' },
+    { id:'custom', label:'Custom Size' },
+  ];
+  const DESIGN_TEAMS = [
+    { id:'banner', label:'Creative Design' },
+    { id:'uiux', label:'UI/UX' },
+  ];
+  const FILE_TYPES = ['image/jpeg','image/png','image/gif','application/pdf'];
+  const dimensionLabelMap = Object.fromEntries(DIMENSION_PRESETS.map(p=>[p.id,p.label]));
+  const orgLabelMap = Object.fromEntries(ORGANISATIONS.map(p=>[p.id,p.label]));
+  const teamLabelMap = Object.fromEntries(DESIGN_TEAMS.map(p=>[p.id,p.label]));
+
+  let state = {
+    organisation:'', dimensionPresets:[], dimensionCustom:'', designTeam:'',
+    spocName:'', spocEmail:'', spocMobile:'', storyline:'', goLiveDate:'',
+    referenceBanner:null
+  };
+  let errors = {};
+
+  const $ = id => document.getElementById(id);
+  const alertSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+
+  function errorHtml(msg){
+    return `<div class="error-text">${alertSvg}<span>${msg}</span></div>`;
+  }
+
+  /* ---------- render static choice groups ---------- */
+  function renderRadioGroup(containerId, items, name, selectedValue, onChange){
+    const el = $(containerId);
+    el.innerHTML = items.map(item => `
+      <label class="choice-row">
+        <input type="radio" name="${name}" value="${item.id}" ${selectedValue===item.id?'checked':''}>
+        <span>${item.label}</span>
+      </label>
+    `).join('');
+    el.querySelectorAll('input').forEach(input=>{
+      input.addEventListener('change', ()=> onChange(input.value));
+    });
+  }
+
+  function renderDimensionGrid(){
+    const el = $('dimensionGrid');
+    el.innerHTML = DIMENSION_PRESETS.map(preset=>{
+      const selected = state.dimensionPresets.includes(preset.id);
+      return `
+        <label class="dim-card ${selected?'selected':''}" data-id="${preset.id}">
+          <input type="checkbox" ${selected?'checked':''}>
+          <div style="flex:1"><p class="dim-label">${preset.label}</p></div>
+        </label>
+      `;
+    }).join('');
+    el.querySelectorAll('.dim-card').forEach(card=>{
+      card.addEventListener('click', (e)=>{
+        e.preventDefault();
+        toggleDimension(card.dataset.id);
+      });
+    });
+  }
+
+  function toggleDimension(id){
+    if(state.dimensionPresets.includes(id)){
+      state.dimensionPresets = state.dimensionPresets.filter(x=>x!==id);
+    } else {
+      state.dimensionPresets = [...state.dimensionPresets, id];
+    }
+    if(errors.dimensionPresets){ errors.dimensionPresets=''; $('err-dimensionPresets').innerHTML=''; }
+    renderDimensionGrid();
+    $('customBoxWrap').classList.toggle('hidden', !state.dimensionPresets.includes('custom'));
+    updateTicket();
+  }
+
+  /* ---------- validation ---------- */
+  function validateForm(){
+    const e = {};
+    if(!state.organisation) e.organisation = 'Organisation is required';
+    if(!state.dimensionPresets.length) e.dimensionPresets = 'Please select at least one banner dimension';
+    if(state.dimensionPresets.includes('custom') && !state.dimensionCustom.trim()) e.dimensionCustom = 'Please specify your custom dimensions';
+    if(!state.designTeam) e.designTeam = 'Design team selection is required';
+    if(!state.spocName.trim()) e.spocName = 'SPOC name is required';
+    if(!state.spocEmail) e.spocEmail = 'SPOC email is required';
+    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.spocEmail)) e.spocEmail = 'Please enter a valid email address';
+    if(!state.spocMobile.trim()) e.spocMobile = 'Mobile number is required';
+    else if(!/^[0-9]{10}$/.test(state.spocMobile.trim())) e.spocMobile = 'Please enter a valid 10-digit mobile number';
+    if(!state.storyline.trim() || state.storyline.trim().length < 10) e.storyline = 'Storyline must be at least 10 characters';
+    if(!state.goLiveDate) e.goLiveDate = 'Go-live date is required';
+    errors = e;
+    renderAllErrors();
+    return Object.keys(e).length === 0;
+  }
+
+  function renderAllErrors(){
+    ['organisation','dimensionPresets','dimensionCustom','designTeam','spocName','spocEmail','spocMobile','storyline','goLiveDate','referenceBanner'].forEach(key=>{
+      const target = $('err-'+key);
+      if(target) target.innerHTML = errors[key] ? errorHtml(errors[key]) : '';
+    });
+    $('spocName').classList.toggle('err', !!errors.spocName);
+    $('spocEmail').classList.toggle('err', !!errors.spocEmail);
+    $('spocMobile').classList.toggle('err', !!errors.spocMobile);
+    $('storyline').classList.toggle('err', !!errors.storyline);
+    $('goLiveDate').classList.toggle('err', !!errors.goLiveDate);
+    $('dimensionCustom').classList.toggle('err', !!errors.dimensionCustom);
+    $('uploadBox').classList.toggle('err', !!errors.referenceBanner);
+  }
+
+  function clearFieldError(key){
+    if(errors[key]){ errors[key]=''; const t=$('err-'+key); if(t) t.innerHTML=''; renderAllErrors(); }
+  }
+
+  /* ---------- ticket preview ---------- */
+  function truncate(str, n){ return str.length > n ? str.slice(0,n-1)+'…' : str; }
+
+  function updateTicket(){
+    $('tOrg').textContent = state.organisation ? orgLabelMap[state.organisation] : '—';
+    $('tOrg').classList.toggle('empty', !state.organisation);
+
+    $('tTeam').textContent = state.designTeam ? teamLabelMap[state.designTeam] : '—';
+    $('tTeam').classList.toggle('empty', !state.designTeam);
+
+    const dimsEl = $('tDims');
+    if(state.dimensionPresets.length){
+      dimsEl.innerHTML = state.dimensionPresets.map(id=>{
+        let label = id==='custom' && state.dimensionCustom ? state.dimensionCustom : dimensionLabelMap[id].split(' (')[0];
+        return `<span class="tag">${label}</span>`;
+      }).join('');
+    } else {
+      dimsEl.innerHTML = '<span class="v empty">—</span>';
+    }
+
+    $('tSpoc').textContent = state.spocName ? state.spocName : '—';
+    $('tSpoc').classList.toggle('empty', !state.spocName);
+
+    $('tDate').textContent = state.goLiveDate ? formatDate(state.goLiveDate) : '—';
+    $('tDate').classList.toggle('empty', !state.goLiveDate);
+
+    $('tFile').textContent = state.referenceBanner ? state.referenceBanner.name : 'None attached';
+    $('tFile').classList.toggle('empty', !state.referenceBanner);
+
+    $('tBrief').textContent = state.storyline.trim() ? truncate(state.storyline.trim(), 160) : 'Nothing written yet.';
+
+    const filledCount = ['organisation','designTeam','spocName','spocEmail','spocMobile','storyline','goLiveDate']
+      .filter(k => state[k] && state[k].toString().trim()).length + (state.dimensionPresets.length?1:0);
+    $('ticketIdPreview').textContent = filledCount >= 6 ? 'READY' : 'DRAFT';
+
+    renderBarcode();
+  }
+
+  function renderBarcode(){
+    const seed = (state.organisation+state.designTeam+state.spocMobile+state.goLiveDate) || 'draft';
+    let hash = 0;
+    for(let i=0;i<seed.length;i++){ hash = (hash*31 + seed.charCodeAt(i)) >>> 0; }
+    const bars = [];
+    for(let i=0;i<28;i++){
+      const h = 6 + ((hash >> (i%24)) & 15);
+      bars.push(`<span style="height:${h}px"></span>`);
+    }
+    $('barcode').innerHTML = bars.join('');
+  }
+
+  function formatDate(iso){
+    const d = new Date(iso+'T00:00:00');
+    if(isNaN(d)) return iso;
+    return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  }
+
+  /* ---------- bindings ---------- */
+  function bindTextField(id, stateKey, extra){
+    const el = $(id);
+    el.addEventListener('input', ()=>{
+      state[stateKey] = el.value;
+      clearFieldError(stateKey);
+      updateTicket();
+      if(extra) extra();
+    });
+  }
+
+  function init(){
+    renderRadioGroup('organisationGroup', ORGANISATIONS, 'organisation', state.organisation, (val)=>{
+      state.organisation = val; clearFieldError('organisation'); updateTicket();
+    });
+    renderDimensionGrid();
+    renderRadioGroup('designTeamGroup', DESIGN_TEAMS, 'designTeam', state.designTeam, (val)=>{
+      state.designTeam = val; clearFieldError('designTeam'); updateTicket();
+    });
+
+    bindTextField('dimensionCustom', 'dimensionCustom');
+    bindTextField('spocName', 'spocName');
+    bindTextField('spocEmail', 'spocEmail');
+    bindTextField('spocMobile', 'spocMobile', ()=>{ $('spocMobile').value = $('spocMobile').value.replace(/\D/g,'').slice(0,10); state.spocMobile = $('spocMobile').value; });
+    bindTextField('storyline', 'storyline');
+    bindTextField('goLiveDate', 'goLiveDate');
+
+    $('bannerUpload').addEventListener('change', handleFileUpload);
+    $('requestForm').addEventListener('submit', handleSubmit);
+    $('clearBtn').addEventListener('click', handleReset);
+    $('anotherBtn').addEventListener('click', handleReset);
+
+    updateTicket();
+  }
+
+  function handleFileUpload(e){
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    if(!FILE_TYPES.includes(file.type)){
+      errors.referenceBanner = 'Please upload an image (JPG, PNG, GIF) or PDF';
+      renderAllErrors();
+      return;
+    }
+    if(file.size > 5*1024*1024){
+      errors.referenceBanner = 'File size must be less than 5MB';
+      renderAllErrors();
+      return;
+    }
+    state.referenceBanner = { name:file.name, size:file.size, type:file.type };
+    errors.referenceBanner = '';
+    renderAllErrors();
+    $('uploadTitle').textContent = 'Replace reference file';
+    $('fileNameDisplay').innerHTML = `<p class="file-name">? ${file.name}</p>`;
+    updateTicket();
+  }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    if(!validateForm()){
+      const firstErrorKey = Object.keys(errors).find(k=>errors[k]);
+      if(firstErrorKey){
+        const target = document.getElementById(firstErrorKey) || document.getElementById('err-'+firstErrorKey);
+        if(target) target.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+      return;
+    }
+
+    const now = new Date();
+    const stamp = now.toISOString().slice(0,10).replace(/-/g,'');
+    const random = Math.floor(Math.random()*10000).toString().padStart(4,'0');
+    const requestId = `REQ-${stamp}-${random}`;
+    const submittedAt = now.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+    console.log('Submission Data Ready for Backend:', { requestId, submittedAt: now.toISOString(), ...state });
+
+    showConfirmation(requestId, submittedAt);
+  }
+
+  function tile(label, value){
+    return `<div class="summary-tile"><span class="meta-label">${label}</span><div class="summary-tile-value">${value}</div></div>`;
+  }
+
+  function showConfirmation(requestId, submittedAt){
+    $('confirmEmail').textContent = state.spocEmail;
+    $('confirmSubmittedAt').textContent = submittedAt;
+    $('confirmRequestId').textContent = requestId;
+
+    $('confirmDetailsGrid').innerHTML = [
+      tile('Organization', orgLabelMap[state.organisation] || '—'),
+      tile('Design Team', teamLabelMap[state.designTeam] || '—'),
+      tile('Go-Live Date', formatDate(state.goLiveDate)),
+      tile('SPOC', state.spocName),
+    ].join('');
+
+    const dimsLabel = state.dimensionPresets.map(id=>dimensionLabelMap[id]).filter(Boolean).join(', ');
+    $('confirmSnapshotGrid').innerHTML = [
+      tile('Dimensions', dimsLabel || '—'),
+      tile('Custom Size', state.dimensionPresets.includes('custom') && state.dimensionCustom ? state.dimensionCustom : 'Not selected'),
+      tile('Mobile Number', state.spocMobile),
+      tile('Reference File', state.referenceBanner ? state.referenceBanner.name : 'Not available'),
+    ].join('');
+
+    $('confirmStory').textContent = state.storyline;
+
+    // flip the docket stamp before switching views (visible if user is quick, otherwise just sets end state)
+    $('ticketStamp').textContent = 'Confirmed';
+    $('ticketStamp').classList.add('confirmed');
+    $('ticketIdPreview').textContent = requestId;
+
+    $('formView').classList.add('hidden');
+    $('confirmationView').classList.remove('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function handleReset(){
+    state = { organisation:'', dimensionPresets:[], dimensionCustom:'', designTeam:'',
+      spocName:'', spocEmail:'', spocMobile:'', storyline:'', goLiveDate:'', referenceBanner:null };
+    errors = {};
+
+    ['spocName','spocEmail','spocMobile','storyline','goLiveDate','dimensionCustom'].forEach(id=>{ $(id).value=''; });
+    $('uploadTitle').textContent = 'Click to upload reference';
+    $('fileNameDisplay').innerHTML = '';
+    $('bannerUpload').value = '';
+    $('customBoxWrap').classList.add('hidden');
+
+    $('ticketStamp').textContent = 'Draft';
+    $('ticketStamp').classList.remove('confirmed');
+
+    renderRadioGroup('organisationGroup', ORGANISATIONS, 'organisation', '', (val)=>{ state.organisation=val; clearFieldError('organisation'); updateTicket(); });
+    renderDimensionGrid();
+    renderRadioGroup('designTeamGroup', DESIGN_TEAMS, 'designTeam', '', (val)=>{ state.designTeam=val; clearFieldError('designTeam'); updateTicket(); });
+
+    renderAllErrors();
+    updateTicket();
+
+    $('confirmationView').classList.add('hidden');
+    $('formView').classList.remove('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
