@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Creative request successfully submitted" />
+    <title>Request Submitted | Relipay</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page success-page">
+      <div class="shell">
+        <section class="success-card" aria-live="polite">
+          <img class="success-logo" src="https://partner.rnfi.in/agent/assets/img/logo.png" alt="Relipay" />
+          <div class="success-top"><div class="success-icon">✓</div><div><p class="success-eyebrow">Request submitted</p><h1>Your brief is in the queue</h1><p id="success-email"></p></div></div>
+          <div class="highlight-row"><div><span>Submitted on</span><strong id="submitted-at"></strong></div><div><span>Request ID</span><strong id="request-id"></strong></div></div>
+          <div class="summary-section"><h2>Submission details</h2><dl class="summary-grid" id="submission-summary"></dl></div>
+          <div class="summary-section"><h2>Request snapshot</h2><dl class="summary-grid" id="request-summary"></dl><div class="brief-summary"><span>Brief</span><p id="submitted-brief"></p></div></div>
+          <a href="index.html" class="button primary new-request">Submit another request</a>
+        </section>
+      </div>
+    </main>
+    <script src="success.js"></script>
+  </body>
+</html>
